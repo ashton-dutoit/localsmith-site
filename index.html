@@ -179,6 +179,17 @@
     margin-top: 14px;
   }
 
+  .email-form { display: flex; gap: 10px; flex-wrap: wrap; align-self: start; }
+  .email-input {
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 12px 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    flex: 1 1 220px;
+  }
+
   .why-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -253,6 +264,27 @@
         <div class="tier"><span class="name">+ Personas</span><span class="price">$29</span></div>
         <div class="tier"><span class="name">+ Full Kit</span><span class="price">$49</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="free-guide">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Free</p>
+      <h2>Get the free quick-start guide</h2>
+    </div>
+    <div class="product-card">
+      <div>
+        <h3>Run a local AI model on AMD/Vulkan (no CUDA)</h3>
+        <p>The install → model → local server steps from the full Blueprint, free. Drop your email and we'll send the PDF plus a heads-up when new guides ship. No spam, unsubscribe any time.</p>
+      </div>
+      <form class="email-form" action="https://assets.mailerlite.com/jsonp/2519000/forms/193431341750027838/subscribe" method="post" target="_blank">
+        <input class="email-input" type="email" name="fields[email]" placeholder="you@example.com" autocomplete="email" required>
+        <input type="hidden" name="ml-submit" value="1">
+        <input type="hidden" name="anticsrf" value="true">
+        <button class="btn primary" type="submit">Send me the guide</button>
+      </form>
     </div>
   </div>
 </section>
