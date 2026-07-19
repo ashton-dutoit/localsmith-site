@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Localsmith — local AI dev tooling, built by hand</title>
+<meta name="description" content="Downloadable guides and config packs for developers running local AI tools on their own hardware. No subscriptions, no cloud dependency.">
+<style>
+  :root {
+    --bg: #0d1512;
+    --bg-raised: #131f1a;
+    --panel: #182620;
+    --copper: #d68a52;
+    --copper-bright: #e9a976;
+    --signal: #6fd4c4;
+    --signal-bg: #16302b;
+    --ink: #eef2ef;
+    --ink-dim: #93a89f;
+    --line: #24352e;
+    --line-strong: #3a4f45;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", "Consolas", "Liberation Mono", monospace;
+    --sans: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #eef1ee;
+      --bg-raised: #ffffff;
+      --panel: #f5f7f4;
+      --copper: #b3652f;
+      --copper-bright: #954f21;
+      --signal: #1f8f79;
+      --signal-bg: #dcf1ea;
+      --ink: #16211c;
+      --ink-dim: #55655d;
+      --line: #c7d0c8;
+      --line-strong: #9fac9f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+  }
+  a { color: var(--copper); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wordmark {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark .dot { color: var(--copper); }
+  .nav a.cta {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--copper);
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 1px solid var(--copper);
+  }
+
+  .hero {
+    padding: 96px 0 72px;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(32px, 5.5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 20px;
+    text-wrap: balance;
+    max-width: 16ch;
+  }
+  h1 .dim { color: var(--ink-dim); font-weight: 400; }
+  .lede {
+    font-size: 18px;
+    color: var(--ink-dim);
+    max-width: 56ch;
+    margin: 0 0 32px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 14px;
+    text-decoration: none;
+    padding: 12px 20px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+  }
+  .btn.primary { background: var(--copper); border-color: var(--copper); color: #16110b; font-weight: 600; }
+  .btn.primary:hover { background: var(--copper-bright); border-color: var(--copper-bright); }
+
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 36px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin: 0 0 8px;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .product-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 720px) {
+    .product-card { grid-template-columns: 1.3fr 1fr; }
+  }
+  .product-card h3 {
+    font-family: var(--mono);
+    font-size: 20px;
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .product-card p { color: var(--ink-dim); margin: 0 0 16px; }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--signal);
+    background: var(--signal-bg);
+    border: 1px solid var(--signal);
+    padding: 3px 8px;
+  }
+  .tiers { display: flex; flex-direction: column; gap: 10px; }
+  .tier {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+  }
+  .tier .name { font-size: 14px; color: var(--ink); }
+  .tier .price { font-family: var(--mono); font-size: 16px; color: var(--copper); font-variant-numeric: tabular-nums; }
+  .status-note {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 14px;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 720px) {
+    .why-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .why-item {
+    border-left: 2px solid var(--copper);
+    padding-left: 16px;
+  }
+  .why-item h4 {
+    font-family: var(--mono);
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+  .why-item p { color: var(--ink-dim); font-size: 14px; margin: 0; }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="wordmark" href="#top">localsmith<span class="dot">.</span></a>
+    <a class="cta" href="https://localsmith.lemonsqueezy.com">Store</a>
+  </div>
+</header>
+
+<div id="top" class="hero wrap">
+  <p class="kicker">Local AI dev tooling</p>
+  <h1>Software that runs<br><span class="dim">on your machine,</span><br>not someone else's.</h1>
+  <p class="lede">Downloadable guides and config packs for developers running local AI tools — LM Studio, Continue, MCP servers — on their own hardware. No subscription. No API key. Built and tested on real machines, not written from documentation.</p>
+  <div class="hero-actions">
+    <a class="btn primary" href="#products">See the first guide</a>
+    <a class="btn" href="https://localsmith.lemonsqueezy.com">Visit the store</a>
+  </div>
+</div>
+
+<section id="products">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">First release</p>
+      <h2>Local AI Dev Blueprint</h2>
+    </div>
+    <div class="product-card">
+      <div>
+        <h3>AMD/Vulkan Edition</h3>
+        <div class="tag-row">
+          <span class="tag">LM Studio</span>
+          <span class="tag">Continue</span>
+          <span class="tag">Gemma 4</span>
+          <span class="tag">No CUDA</span>
+        </div>
+        <p>Most local-AI guides assume an NVIDIA card. This one doesn't — it's the exact setup tested on an AMD Radeon RX 580 (8GB VRAM), covering GPU-offload tuning, context-length limits, and the Continue extension config that makes it a real coding assistant. Copy-paste config files, full troubleshooting section, tested top to bottom.</p>
+        <p class="status-note">Launching on the Localsmith store shortly — check back or watch the store page.</p>
+      </div>
+      <div class="tiers">
+        <div class="tier"><span class="name">Core Blueprint</span><span class="price">$19</span></div>
+        <div class="tier"><span class="name">+ Personas</span><span class="price">$29</span></div>
+        <div class="tier"><span class="name">+ Full Kit</span><span class="price">$49</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Why Localsmith</p>
+      <h2>Built by hand, tested for real</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <h4>Real setups, not tutorials</h4>
+        <p>Every guide comes from a working machine, not a rewrite of someone else's documentation.</p>
+      </div>
+      <div class="why-item">
+        <h4>One-time price</h4>
+        <p>No subscriptions. Buy once, keep the files, use them on as many of your own machines as you like.</p>
+      </div>
+      <div class="why-item">
+        <h4>Hardware you actually own</h4>
+        <p>Coverage for the GPUs and setups the big tutorials skip — not just the newest NVIDIA flagship.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>Localsmith — solo digital product studio</span>
+  <span>South Africa</span>
+</footer>
+
+</body>
+</html>
